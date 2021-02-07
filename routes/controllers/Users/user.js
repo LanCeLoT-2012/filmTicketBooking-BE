@@ -104,7 +104,7 @@ module.exports.isUserStillLoggedIn = async (req, res, next) => {
 			// Get user;s infomation from accessToken
 			JWT.verify(accessToken, "filmTicketBooking", async (err, decodedToken) => {
 				if (err) {
-					return res.status(400).json({ error: "Experied token !" });
+					return res.status(400).json({ message: "You have been logged out due to inactivity !" });
 				} else {
 					const foundedUser = await User.findById(
 						decodedToken._id

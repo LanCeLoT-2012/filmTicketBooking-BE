@@ -13,7 +13,7 @@ const cinemaSchema = mongoose.Schema({
         ],
         default: []
     },  
-    // cinemaLogo: {type: String, required: true},
+    
 })
 
 const Cinema = mongoose.model("cinema", cinemaSchema);
