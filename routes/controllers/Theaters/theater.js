@@ -21,15 +21,47 @@ module.exports.addNewTheater = async (req, res, next) => {
 					.status(400)
 					.send({ error: "Theater has already existed !" });
 			} else {
-				const defaultSeats = 30;
-				const seats = [...new Array(defaultSeats)].map(async (seat) => {
-					return new Seat();
-				});
+				const numberOfNomalSeats = 48;
+				const numberOfVipSeats = 12;
+				const numberOfSweetBoxs = 5;
+				// Generate types of seats
+				const normalSeats = await Promise.all(
+					[...new Array(numberOfNomalSeats)].map(async (seat) => {
+						return new Seat({
+							status: false,
+							userId: null,
+							seatType: "Normal Seat",
+							price: "80.000",
+						});
+					})
+				);
+				const vipSeats = await Promise.all(
+					[...new Array(numberOfVipSeats)].map(async (seat) => {
+						return new Seat({
+							status: false,
+							userId: null,
+							seatType: "Vip Seat",
+							price: "100.000",
+						});
+					})
+				);
+				const sweetBoxs = await Promise.all(
+					[...new Array(numberOfSweetBoxs)].map(async (seat) => {
+						return new Seat({
+							status: false,
+							userId: null,
+							seatType: "Sweet Box",
+							price: "150.000",
+						});
+					})
+				);
 				const newTheater = new Theater({
 					theaterName,
 					cinemaId,
-					seats,
-				});
+					normalSeats,
+					vipSeats,
+					sweetBoxs
+				})
 				await newTheater.save();
 				// Add new theater to cinema
 				foundedCinema.theaters.push(newTheater._id);
@@ -42,3 +74,4 @@ module.exports.addNewTheater = async (req, res, next) => {
 		res.status(500).send("Something went wrong !");
 	}
 };
+

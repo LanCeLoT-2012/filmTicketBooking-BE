@@ -97,7 +97,7 @@ module.exports.getShowtimeDetai = async (req, res, next) => {
 						{path: "cinemaBrand", select: "-_id brandName"}
 					]
 				},
-				{path: "theaterId", select: "-_id theaterName seats"}
+				{path: "theaterId", select: "-_id theaterName normalSeats vipSeats sweetBoxs"}
 			])
 		if (!foundedShowtime) {
 			return res.status(400).json({ error: "This showtime is no longer existed !" });
@@ -109,3 +109,4 @@ module.exports.getShowtimeDetai = async (req, res, next) => {
 		return res.status(500).send("Something went wrong !");
 	}
 }
+
