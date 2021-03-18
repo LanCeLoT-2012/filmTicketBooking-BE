@@ -5,11 +5,16 @@ const cors = require("cors");
 
 const app = expresss();
 
-app.use(cors({
-	origin: ["http://localhost:3000"],
-	credentials: true,
-	optionsSuccessStatus: 200,
-}))
+app.use(
+	cors({
+		origin: [
+			"http://localhost:3000",
+			"https://compassionate-visvesvaraya-95a676.netlify.app/",
+		],
+		credentials: true,
+		optionsSuccessStatus: 200,
+	})
+);
 
 app.use(expresss.json());
 
@@ -29,6 +34,8 @@ mongoose.connect(
 	}
 );
 
-app.listen(5000, () => {
+const port = process.env.PORT || 5000;
+
+app.listen(port, () => {
 	console.log("Application is listening at port 5000");
 });

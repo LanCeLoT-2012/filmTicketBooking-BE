@@ -1,5 +1,4 @@
 const mongoose = require("mongoose");
-const { seatSchema } = require("./seat");
 
 const theaterSchema = mongoose.Schema({
 	theaterName: { type: String, required: true },
@@ -8,9 +7,9 @@ const theaterSchema = mongoose.Schema({
 		ref: "cinema",
 		required: true,
 	},
-	normalSeats: { type: [{ type: seatSchema }], default: [] },
-    vipSeats: { type: [{ type: seatSchema }], default: [] },
-    sweetBoxs: { type: [{ type: seatSchema }], default: [] }
+	normalSeats: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "seat" }], default: [] },
+    vipSeats: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "seat" }], default: [] },
+    sweetBoxs: { type: [{ type: mongoose.Schema.Types.ObjectId, ref: "seat" }], default: [] }
 });
 
 const Theater = mongoose.model("theater", theaterSchema);

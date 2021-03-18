@@ -14,7 +14,7 @@ const filmSchema = mongoose.Schema({
     duration: { type: String, required: true },
     filmLabel: { type: String, required: true },
     ratingPoint: { type: String, required: true },
-    comments: {type: [commentSchema], default: [] },
+    comments: { type: [{ type: commentSchema }], default: [] },
 });
 
 const Film = mongoose.model("film", filmSchema);

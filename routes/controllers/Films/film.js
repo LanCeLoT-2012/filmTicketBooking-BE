@@ -97,11 +97,11 @@ module.exports.getFilmDetail = async (req, res, next) => {
 	}
 };
 
+// Get all film's comments
 module.exports.getFilmComments = async (req, res, next) => {
 	const { filmId } = req.params;
 	try {
 		const filmComments = await Film.findById(filmId)
-			.sort({ "comments.commentTime": "desc" })
 			.select("comments -_id")
 			.populate([
 				{
@@ -111,7 +111,8 @@ module.exports.getFilmComments = async (req, res, next) => {
 						select: "avatar displayName -_id",
 					},
 				},
-			]);
+			])
+			.sort({ "comments.commentTime": 1 });
 		return res.status(200).json(filmComments);
 	} catch (error) {
 		console.log(error);

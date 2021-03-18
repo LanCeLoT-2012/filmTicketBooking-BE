@@ -73,16 +73,17 @@ module.exports.userSignIn = async (req, res, next) => {
 				}
 				/* --------------------------------- Step 2 --------------------------------- */
 				// Generate JsonWebToken and send it to client
+				const foundedUser = await User.findOne({ email }).select(
+					"-password -confirmPassword"
+				);
 				const accessToken = await JWT.sign(
-					{ _id: isUserExists._id, email },
+					{ foundedUser },
 					"filmTicketBooking",
 					{ expiresIn: "3600000" }
 				);
-				const foundedUser = await User.findOne({ email });
 				res.status(200).json({
 					message: "Login successful !",
 					accessToken,
-					user: foundedUser,
 				});
 				/* --------------------------------- Step 2 --------------------------------- */
 			}
@@ -101,17 +102,17 @@ module.exports.isUserStillLoggedIn = async (req, res, next) => {
 		return res.status(400).json({ error: "No access token provided !" });
 	} else {
 		try {
-			// Get user;s infomation from accessToken
+			// Get user's infomation from accessToken
 			JWT.verify(accessToken, "filmTicketBooking", async (err, decodedToken) => {
 				if (err) {
-					return res.status(400).json({ message: "You have been logged out due to inactivity !" });
+					console.log(err);
+					return res.status(401).json({ error : "You have not logged in !" });
 				} else {
-					const foundedUser = await User.findById(
-						decodedToken._id
-					).select("email displayName avatar -_id");
-					return res.status(200).json(foundedUser);
+					req.body.user = decodedToken.foundedUser;
+					next();
 				}
-			});
+				}
+			);
 		} catch (error) {
 			console.log(error);
 			return res.status(500).send("Something went wrong !");
@@ -139,6 +140,8 @@ module.exports.getUserById = async (req, res, next) => {
 module.exports.commentToFilm = async (req, res, next) => {
 	const { userId, content, filmId } = req.body;
 	const currentDate = new Date();
+	let commentTime = currentDate.getTime();
+	console.log(commentTime);
 	try {
 		const foundedFilm = await Film.findById(filmId);
 		if (!foundedFilm) {
@@ -150,8 +153,9 @@ module.exports.commentToFilm = async (req, res, next) => {
 				userId,
 				content,
 				filmId,
-				commentTime: currentDate,
+				commentTime,
 			});
+			console.log(newComment);
 			// Save comment to film data
 			foundedFilm.comments.push(newComment);
 			await foundedFilm.save();

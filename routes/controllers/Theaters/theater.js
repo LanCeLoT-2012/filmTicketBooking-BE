@@ -27,32 +27,38 @@ module.exports.addNewTheater = async (req, res, next) => {
 				// Generate types of seats
 				const normalSeats = await Promise.all(
 					[...new Array(numberOfNomalSeats)].map(async (seat) => {
-						return new Seat({
+						const newSeat = new Seat({
 							status: false,
 							userId: null,
 							seatType: "Normal Seat",
 							price: "80.000",
 						});
+						await newSeat.save();
+						return newSeat._id;
 					})
 				);
 				const vipSeats = await Promise.all(
 					[...new Array(numberOfVipSeats)].map(async (seat) => {
-						return new Seat({
+						const newSeat = new Seat({
 							status: false,
 							userId: null,
 							seatType: "Vip Seat",
 							price: "100.000",
 						});
+						await newSeat.save();
+						return newSeat._id;
 					})
 				);
 				const sweetBoxs = await Promise.all(
 					[...new Array(numberOfSweetBoxs)].map(async (seat) => {
-						return new Seat({
+						const newSeat = new Seat({
 							status: false,
 							userId: null,
 							seatType: "Sweet Box",
 							price: "150.000",
 						});
+						await newSeat.save();
+						return newSeat._id;
 					})
 				);
 				const newTheater = new Theater({
