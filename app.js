@@ -2,6 +2,8 @@ const mongoose = require("mongoose");
 const expresss = require("express");
 const api = require("./routes/api");
 const cors = require("cors");
+const compression = require("compression");
+const helmet = require("helmet");
 
 const app = expresss();
 
@@ -15,6 +17,10 @@ app.use(
 		optionsSuccessStatus: 200,
 	})
 );
+
+app.use(compression());
+
+app.use(helmet());
 
 app.use(expresss.json());
 
