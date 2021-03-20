@@ -1,5 +1,3 @@
-const { ObjectId } = require("bson");
-const { response } = require("express");
 const { Seat } = require("../../../models/seat");
 const ShowTime = require("../../../models/showtime");
 
