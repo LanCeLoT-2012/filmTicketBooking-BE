@@ -132,11 +132,11 @@ module.exports.handleBookingSeats = async (req, res, next) => {
 				_id: { $in: bookingSeatIds },
 			});
 			// Update status to seats collection
-			// await bookingSeats.map(async (seat) => {
-			// 	seat.status = true;
-			// 	seat.userId = user._id;
-			// 	await seat.save();
-			// });
+			await bookingSeats.map(async (seat) => {
+				seat.status = true;
+				seat.userId = user._id;
+				await seat.save();
+			});
 			return res.status(200).json({
 				message: "Bạn đã đặt vé thành công !",
 				userInformation: user,
