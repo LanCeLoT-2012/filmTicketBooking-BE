@@ -17,7 +17,6 @@ module.exports.addNewShowTime = async (req, res, next) => {
 			showTimes.push(startingTime);
 			// Create new showtime and save it to database
 			const newShowtime = new ShowTime({
-				filmId,
 				cinemaId,
 				theaterId,
 				showDate,
