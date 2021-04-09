@@ -9,10 +9,7 @@ const app = expresss();
 
 app.use(
 	cors({
-    origin: [
-      "https://fanxine-be.herokuapp.com",
-			"https://master--compassionate-visvesvaraya-95a676.netlify.app",
-		],
+    origin: "https://master--compassionate-visvesvaraya-95a676.netlify.app",
 		optionsSuccessStatus: 200,
 	})
 );
