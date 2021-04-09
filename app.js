@@ -9,7 +9,7 @@ const app = expresss();
 
 app.use(
 	cors({
-    origin: "https://compassionate-visvesvaraya-95a676.netlify.app/",
+    origin: "https://compassionate-visvesvaraya-95a676.netlify.app",
     optionsSuccessStatus: 200,
 	})
 );
