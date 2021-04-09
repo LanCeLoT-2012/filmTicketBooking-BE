@@ -11,7 +11,7 @@ app.use(
 	cors({
 		origin: "https://compassionate-visvesvaraya-95a676.netlify.app",
 		optionsSuccessStatus: 200,
-		withCredentials: true,
+		credentials: true,
 	})
 );
 
