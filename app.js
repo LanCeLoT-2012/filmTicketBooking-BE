@@ -9,7 +9,8 @@ const app = expresss();
 
 app.use(
 	cors({
-		origin: [
+    origin: [
+      "https://fanxine-be.herokuapp.com",
 			"https://master--compassionate-visvesvaraya-95a676.netlify.app",
 		],
 		credentials: true,
