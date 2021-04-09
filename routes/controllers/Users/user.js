@@ -1,6 +1,6 @@
 const User = require("../../../models/user");
 const Validation = require("../../../helpers/validations");
-const bcrypt = require("bcrypt");
+const bcrypt = require("bcryptjs");
 const JWT = require("jsonwebtoken");
 const Film = require("../../../models/film");
 const { Comment } = require("../../../models/comment");
