@@ -13,7 +13,6 @@ app.use(
       "https://fanxine-be.herokuapp.com",
 			"https://master--compassionate-visvesvaraya-95a676.netlify.app",
 		],
-		credentials: true,
 		optionsSuccessStatus: 200,
 	})
 );
