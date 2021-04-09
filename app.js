@@ -10,8 +10,7 @@ const app = expresss();
 app.use(
 	cors({
 		origin: [
-			"http://localhost:3000",
-			"https://compassionate-visvesvaraya-95a676.netlify.app/",
+			"https://master--compassionate-visvesvaraya-95a676.netlify.app",
 		],
 		credentials: true,
 		optionsSuccessStatus: 200,
