@@ -1,15 +1,18 @@
 const mongoose = require("mongoose");
-const expresss = require("express");
+const express = require("express");
 const api = require("./routes/api");
 const cors = require("cors");
 const compression = require("compression");
 const helmet = require("helmet");
 
-const app = expresss();
+const app = express();
 
 app.use(
 	cors({
-		origin: "https://compassionate-visvesvaraya-95a676.netlify.app",
+    origin: [
+      "https://compassionate-visvesvaraya-95a676.netlify.app",
+      "http://localhost:3000"
+    ],
 		optionsSuccessStatus: 200,
 		credentials: true,
 	})
@@ -19,7 +22,7 @@ app.use(compression());
 
 app.use(helmet());
 
-app.use(expresss.json());
+app.use(express.json());
 
 app.use("/", api);
 

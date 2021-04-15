@@ -106,7 +106,7 @@ module.exports.getFilmComments = async (req, res, next) => {
 			.populate([
 				{
 					path: "comments",
-					populate: {
+					populate: { 
 						path: "userId",
 						select: "avatar displayName -_id",
 					},

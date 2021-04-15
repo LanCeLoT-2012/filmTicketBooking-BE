@@ -118,12 +118,12 @@ module.exports.getShowtimeDetail = async (req, res, next) => {
 };
 
 module.exports.handleBookingSeats = async (req, res, next) => {
-	const { bookingSeatIds, user, paymentMethod } = req.body;
+  const { bookingSeatIds, paymentMethod } = req.body.bookingSeatsInfo;
+  const { user } = req.body;
 	try {
 		if (bookingSeatIds.length === 0) {
 			return res
-				.status(400)
-				.json({ error: "Vui lòng chọn ghế trước khi thanh toán !!" });
+				.status(400).json({ error: "Vui lòng chọn ghế trước khi thanh toán !!" });
 		} else if (paymentMethod === "") {
 			return res.status(400).json({ error: "Vui lòng chọn phương thức thanh toán !!" });
 		} else {

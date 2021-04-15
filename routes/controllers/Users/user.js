@@ -6,7 +6,7 @@ const Film = require("../../../models/film");
 const { Comment } = require("../../../models/comment");
 
 module.exports.userSignUp = async (req, res, next) => {
-	const { email, password, confirmPassword, displayName, avatar } = req.body;
+	const { email, password, displayName, avatar } = req.body;
 	/**
 	 * Step 1: Validation sign up fields
 	 * Step 2: Check if user is already exists, if not, create new user and save it to database
@@ -94,32 +94,6 @@ module.exports.userSignIn = async (req, res, next) => {
 	}
 };
 
-module.exports.isUserStillLoggedIn = async (req, res, next) => {
-	// Get accessToken that has been sent from client
-	const headerAuthorization = req.headers.authorization;
-	const accessToken = headerAuthorization.replace("Bearer ", "");
-	if (!accessToken) {
-		return res.status(400).json({ error: "No access token provided !" });
-	} else {
-		try {
-			// Get user's infomation from accessToken
-			JWT.verify(accessToken, "filmTicketBooking", async (err, decodedToken) => {
-				if (err) {
-					console.log(err);
-					return res.status(401).json({ error : "You have not logged in !" });
-				} else {
-					req.body.user = decodedToken.foundedUser;
-					next();
-				}
-				}
-			);
-		} catch (error) {
-			console.log(error);
-			return res.status(500).send("Something went wrong !");
-		}
-	}
-};
-
 module.exports.getUserById = async (req, res, next) => {
 	const { userId } = req.params;
 	try {
@@ -138,10 +112,10 @@ module.exports.getUserById = async (req, res, next) => {
 };
 
 module.exports.commentToFilm = async (req, res, next) => {
-	const { userId, content, filmId } = req.body;
+  const { _id } = req.body.user;
+  const { content, filmId } = req.body;
 	const currentDate = new Date();
-	let commentTime = currentDate.getTime();
-	console.log(commentTime);
+  let commentTime = currentDate.getTime().toString();
 	try {
 		const foundedFilm = await Film.findById(filmId);
 		if (!foundedFilm) {
@@ -150,14 +124,14 @@ module.exports.commentToFilm = async (req, res, next) => {
 				.json({ error: "This film is no longer existed !" });
 		} else {
 			const newComment = new Comment({
-				userId,
+				userId: _id,
 				content,
 				filmId,
 				commentTime,
 			});
-			console.log(newComment);
+      newComment.save();
 			// Save comment to film data
-			foundedFilm.comments.push(newComment);
+			foundedFilm.comments.push(newComment._id);
 			await foundedFilm.save();
 			return res
 				.status(200)
