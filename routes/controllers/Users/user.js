@@ -21,7 +21,7 @@ module.exports.userSignUp = async (req, res, next) => {
 	try {
 		const isUserExists = await User.findOne({ email });
 		if (isUserExists) {
-			return res.status(400).json({ Error: "Email has been used !!" });
+			return res.status(400).json({ Error: "Email này đã được sử dụng !" });
 		} else {
 			// Hash sign up password before save it with other fields
 			const hashedPassword = await bcrypt.hash(password, 8);
@@ -33,7 +33,7 @@ module.exports.userSignUp = async (req, res, next) => {
 				avatar,
 			});
 			await newUser.save();
-			res.status(200).json({ message: "Sign up successful !" });
+			res.status(200).json({ message: "Đăng kí tài khoản thành công !" });
 		}
 	} catch (error) {
 		console.log(error);
@@ -50,26 +50,20 @@ module.exports.userSignIn = async (req, res, next) => {
 	try {
 		/* --------------------------------- Step 1 --------------------------------- */
 		if (email === "") {
-			return res.status(400).json({ error: "Please enter your email !" });
+			return res.status(400).json({ error: "Vui lòng nhập vào email !" });
 		} else if (password === "") {
-			return res
-				.status(400)
-				.json({ error: "Please enter your password !" });
+			return res.status(400).json({ error: "Vui lòng nhập vào password !" });
 		} else {
 			const isUserExists = await User.findOne({ email });
 			if (!isUserExists) {
-				return res
-					.status(400)
-					.json({ error: "Account does not exists !" });
+				return res.status(400).json({ error: "Tài khoảng không tồn tại !" });
 			} else {
 				const isPassTrue = await bcrypt.compare(
 					password,
 					isUserExists.password
 				);
 				if (!isPassTrue) {
-					return res
-						.status(400)
-						.json({ error: "Password is not correct !" });
+					return res.status(400).json({ error: "Mật khẩu không chính xác !" });
 				}
 				/* --------------------------------- Step 2 --------------------------------- */
 				// Generate JsonWebToken and send it to client
@@ -82,7 +76,7 @@ module.exports.userSignIn = async (req, res, next) => {
 					{ expiresIn: "3600000" }
 				);
 				res.status(200).json({
-					message: "Login successful !",
+					message: "Đăng nhập thành công !",
 					accessToken,
 				});
 				/* --------------------------------- Step 2 --------------------------------- */
@@ -101,7 +95,7 @@ module.exports.getUserById = async (req, res, next) => {
 			"email displayName avatar -_id"
 		);
 		if (!foundedUser) {
-			return res.status(400).send({ error: "User not founded !" });
+			return res.status(400).send({ error: "Không tìm thấy người dùng !" });
 		} else {
 			return res.status(200).json(foundedUser);
 		}
@@ -121,7 +115,7 @@ module.exports.commentToFilm = async (req, res, next) => {
 		if (!foundedFilm) {
 			return res
 				.status(400)
-				.json({ error: "This film is no longer existed !" });
+				.json({ error: "Bộ phim này đã không còn tồn tại !" });
 		} else {
 			const newComment = new Comment({
 				userId: _id,
@@ -135,7 +129,7 @@ module.exports.commentToFilm = async (req, res, next) => {
 			await foundedFilm.save();
 			return res
 				.status(200)
-				.json({ message: "You have commented to this film !" });
+				.json({ message: "Bạn đã bình luận về bộ phim này !" });
 		}
 	} catch (error) {
 		console.log(error);
