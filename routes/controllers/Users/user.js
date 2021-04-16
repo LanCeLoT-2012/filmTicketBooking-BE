@@ -106,24 +106,26 @@ module.exports.getUserById = async (req, res, next) => {
 };
 
 module.exports.commentToFilm = async (req, res, next) => {
+  console.log(req.body);
   const { _id } = req.body.user;
   const { content, filmId } = req.body;
+  console.log(content);
 	const currentDate = new Date();
   let commentTime = currentDate.getTime().toString();
-	try {
-		const foundedFilm = await Film.findById(filmId);
+  try {
+    if (content === "") {
+      return res
+			.status(400)
+			.json({ error: "Vui lòng nhập nội dung bình luận !" });
+    } else {
+      const foundedFilm = await Film.findById(filmId);
 		if (!foundedFilm) {
 			return res
 				.status(400)
 				.json({ error: "Bộ phim này đã không còn tồn tại !" });
 		} else {
-			const newComment = new Comment({
-				userId: _id,
-				content,
-				filmId,
-				commentTime,
-			});
-      newComment.save();
+			const newComment = new Comment({ userId: _id, content, filmId, commentTime });
+			newComment.save();
 			// Save comment to film data
 			foundedFilm.comments.push(newComment._id);
 			await foundedFilm.save();
@@ -131,6 +133,7 @@ module.exports.commentToFilm = async (req, res, next) => {
 				.status(200)
 				.json({ message: "Bạn đã bình luận về bộ phim này !" });
 		}
+    }
 	} catch (error) {
 		console.log(error);
 		return res.status(500).send("Something went wrong !");

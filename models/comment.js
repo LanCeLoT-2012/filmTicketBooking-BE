@@ -4,7 +4,7 @@ const commentSchema = mongoose.Schema({
 	userId: { type: mongoose.Schema.Types.ObjectId, ref: "user" },
 	content: { type: String },
 	filmId: { type: mongoose.Schema.Types.ObjectId, ref: "film" },
-	commentTime: { type: String },
+	commentTime: { type: String, default: Date.now() },
 });
 
 const Comment = mongoose.model("comment", commentSchema);
